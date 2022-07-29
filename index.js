@@ -128,7 +128,11 @@ app.get('/movies', (req, res) => {
     res.json(topTenMovies);
   });
 
-app.use('documentation.html' express.static('public'));
+app.use(express.static('public'));
+
+app.get('/documentation', (req, res) => {
+    res.sendFile('public/documentation.html', {root: __dirname});
+});
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
