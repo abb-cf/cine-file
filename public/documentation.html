@@ -1,3 +1,18 @@
 **CineFile**
 A database for lovers of all types of movies. 
 Users will be able to create (and disable) a personal profile from which they can access information about different movies, directors, and genres.
+
+
+URL Endpoints & Request Methods:
+
+/movies  -- GET -- returns a list of all movies to the user
+/movies/:title -- GET -- returns all data about a single movie 
+/movies/:genre -- GET -- returns a list of movies related to a particular genre and information on that genre 
+/movies/:director -- GET -- returns data about a particular director
+
+/users -- POST -- requests a JSON object holding data about the user to add -- responds with the added JSON object holding the new user data and an ID
+/users/:username -- PUT -- updates the user's information (username)
+/users/favorites -- POST -- adds a movie to the user's list of favorites 
+/users/favorites -- DELETE -- removes a movie from the user's list of favroites 
+/users/:username -- DELETE -- removes a user by allowing them to deregister from the app 
+
