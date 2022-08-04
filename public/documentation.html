@@ -16,3 +16,72 @@ URL Endpoints & Request Methods:
 /users/favorites -- DELETE -- removes a movie from the user's list of favroites 
 /users/:username -- DELETE -- removes a user by allowing them to deregister from the app 
 
+
+In-Depth Endpoint Documentation:
+
+Returns a JSON list of all movies to the user:
+/movies
+GET
+no parameters
+no body data expected
+format of response data: JSON
+
+Returns all data on a single movie based on title
+/movies/title
+GET
+URL parameters: title of movie (ex: /movies/Princess%20Diaries)
+no body data expected
+format of response data: JSON
+
+Returns a list of movies related to a particular genre
+/movies/genre
+GET
+URL parameters: type of genre (ex: /movies/comedy)
+no body data expected
+format of response data: JSON
+
+Returns data about a particular director
+/movies/director
+GET
+URL parameters: name of director (ex: /movies/Gary%20Marshall)
+no body data expected
+format of response data: JSON
+
+requests a JSON object holding data about the user to add -- 
+responds with the added JSON object holding the new user data and an ID
+/users
+POST
+query parameters: none
+body data expected: JSON object holding the new user data 
+    (example: { name: 'Amy Beck',
+                email address: 'amy@gmail.com', 
+                username: 'amyjenna' })
+format of response data: text confirmation
+
+Updates the user's information (username)
+/users/:username
+PUT 
+URL parameters: current username (ex: /users/amyjenna)
+body data expected: new username (ex: {username: amybeck})
+format of response data: text confirmation
+
+Adds a movie to the user's list of favorites 
+/users/favorites
+POST
+URL parameters: none
+body data expected: title of favorite movie (ex: 'Princess Diaries')
+format of response data: text confirmation
+
+Removes a movie from the user's list of favroites 
+/users/favorites
+DELETE
+URL parameters: none
+body data expected: title of movie to be removed from favoirtes (ex: 'Princess Diaries')
+format of response data: text confirmation
+
+Removes a user by allowing them to deregister from the app 
+/users/:username
+DELETE
+URL parameters: username (ex: /users/amybeck)
+body data expected: none
+format of response data: text confirmation of removed user.
