@@ -142,7 +142,7 @@ app.post('/users', (req, res) => {
 // Adds movie to a user's list of favorites
 app.post('/users/:Username/movies/:MovieID', (req, res) => {
     Users.findOneAndUPdate({ Username: req.params.Username }, {
-        $push: { FavoriteMovies: req.params.MovieID }
+        $addToSet: { FavoriteMovies: req.params.MovieID }
     },
     { new: true }, //This line makes sure that the updated info is returned.
     (err, updatedUser) => {
