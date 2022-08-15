@@ -1,17 +1,19 @@
-const mongoose = require('mongoose');
-const Models = require('./models.js');
-
-const Movies = Models.Movies;
-const Users = Models.Users;
-
-mongoose.connect('mongodb://localhost:27017/cinefiledb', { useNewUrlParser: true, useUnifiedTopology: true });
-
-const express = require("express"),
+const express = require('express'),
     bodyParser = require('body-parser'),
     uuid = require('uuid'),
     morgan = require('morgan');
 
 const app = express();
+
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movies;
+const Users = Models.Users;
+const Genres = Models.Genre;
+const Directors = Models.Director;
+
+mongoose.connect('mongodb://localhost:27017/cinefiledb', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 
@@ -33,13 +35,25 @@ app.get('/movies', (req, res) => {
         });
   });
 
+  //returns a list of all users
+  app.get('/users', (req, res) => {
+    Users.find()
+        .then((users) => {
+            res.status(201).json(users);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+  })
+
 // Gets the data about a single movie, by title  
 app.get('/movies/:title', (req, res) => {
     Movies.findOne({ Title: req.params.Title })
         .then((movie) => {
             res.json(movie);
         })
-        .catch((err) {
+        .catch((err) => {
             console.error(err);
             res.status(500).send('Error: ' + err);
         });
@@ -47,11 +61,11 @@ app.get('/movies/:title', (req, res) => {
 
 // Gets the data about a single genre 
 app.get('/movies/:genre', (req, res) => {
-    Movies.findOne({ Genre.Name: req.params.Genre})
+    Movies.findOne({ 'Genre.Name': req.params.Genre})
         .then((genre) => {
             res.json(genre);
         })
-        .catch((err) {
+        .catch((err) => {
             console.error(err);
             res.status(500).send('Error: ' + err);
         });
@@ -59,11 +73,11 @@ app.get('/movies/:genre', (req, res) => {
 
 // Gets the data about a single director, by name  
 app.get('/movies/:director', (req, res) => {
-    Movies.findOne({ Director:Name: req.params.Director})
+    Movies.findOne({ 'Director:Name': req.params.Director})
         .then((director) => {
             res.json(director);
         })
-        .catch((err) {
+        .catch((err) => {
             console.error(err);
             res.status(500).send('Error: ' + err);
         });
@@ -142,7 +156,7 @@ app.post('/users', (req, res) => {
 // Adds movie to a user's list of favorites
 app.post('/users/:Username/movies/:MovieID', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $addToSet: { FavoriteMovies: req.params.MovieID }
+        $addToSet: { Favorites: req.params.MovieID }
     },
     { new: true }, //This line makes sure that the updated info is returned.
     (err, updatedUser) => {
@@ -158,7 +172,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 // Deletes a movie from a user's list of favorites
 app.delete('users/:Username/movies/:MovieID', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $delete: { Favorites. req.params.MovieID }
+        $delete: { Favorites: req.params.MovieID }
     },
     { new: true }, 
     (err, updatedUser) => {
