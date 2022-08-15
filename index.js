@@ -46,17 +46,27 @@ app.get('/movies/:title', (req, res) => {
 });
 
 // Gets the data about a single genre 
-app.get('/movies/genre', (req, res) => {
-    res.send('Successful GET request for data on a specific genre.');
-    // res.json(movies.find((genre) =>
-    // { return movie.genre === req.params.genre }));
+app.get('/movies/:genre', (req, res) => {
+    Movies.findOne({ Genre.Name: req.params.Genre})
+        .then((genre) => {
+            res.json(genre);
+        })
+        .catch((err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Gets the data about a single director, by name  
-app.get('/movies/director', (req, res) => {
-    res.send('Successful GET request for data on a specific director.');
-    // res.json(movies.find((director) =>
-    // { return movie.director === req.params.director }));
+app.get('/movies/:director', (req, res) => {
+    Movies.findOne({ Director:Name: req.params.Director})
+        .then((director) => {
+            res.json(director);
+        })
+        .catch((err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
   
 // Adds data for a new user
