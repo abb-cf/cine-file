@@ -35,8 +35,14 @@ app.get('/movies', (req, res) => {
 
 // Gets the data about a single movie, by title  
 app.get('/movies/:title', (req, res) => {
-    res.json(topTenMovies.find((movie) =>
-    { return movie.title === req.params.title }));
+    Movies.findOne({ Title: req.params.Title })
+        .then((movie) => {
+            res.json(movie);
+        })
+        .catch((err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Gets the data about a single genre 
