@@ -140,19 +140,19 @@ app.post('/users', (req, res) => {
   });
 
 // Adds movie to a user's list of favorites
-app.post('/users/favorites', (req, res) => {
-    
-    res.send('Successful POST of new favorite movie to user list of favorites.');
-    
-    // let favorite = req.body;
-
-    // if (!favorite.title) {
-    //     const message = 'Missing title in request body';
-    //     res.status(400).send(message);
-    // } else {
-    //     users.push(favorite);
-    //     res.status(201).send(favorite);
-    // }
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+    Users.findOneAndUPdate({ Username: req.params.Username }, {
+        $push: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true }, //This line makes sure that the updated info is returned.
+    (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    });
 });
 
 // Deletes a movie from a user's list of favorites
