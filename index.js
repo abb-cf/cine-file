@@ -10,8 +10,6 @@ const Models = require('./models.js');
 
 const Movies = Models.Movies;
 const Users = Models.Users;
-const Genres = Models.Genre;
-const Directors = Models.Director;
 
 mongoose.connect('mongodb://localhost:27017/cinefiledb', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -48,7 +46,7 @@ app.get('/movies', (req, res) => {
   })
 
 // Gets the data about a single movie, by title  
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:Title', (req, res) => {
     Movies.findOne({ Title: req.params.Title })
         .then((movie) => {
             res.json(movie);
@@ -60,10 +58,10 @@ app.get('/movies/:title', (req, res) => {
 });
 
 // Gets the data about a single genre 
-app.get('/movies/:genre', (req, res) => {
+app.get('/genres/:Genre', (req, res) => {
     Movies.findOne({ 'Genre.Name': req.params.Genre})
-        .then((genre) => {
-            res.json(genre);
+        .then((movie) => {
+            res.status(201).json(movie.Genre);
         })
         .catch((err) => {
             console.error(err);
@@ -72,10 +70,10 @@ app.get('/movies/:genre', (req, res) => {
 });
 
 // Gets the data about a single director, by name  
-app.get('/movies/:director', (req, res) => {
+app.get('/directors/:Director', (req, res) => {
     Movies.findOne({ 'Director:Name': req.params.Director})
-        .then((director) => {
-            res.json(director);
+        .then((movie) => {
+            res.status(201).json(movie.Director);
         })
         .catch((err) => {
             console.error(err);
@@ -133,8 +131,9 @@ app.post('/users', (req, res) => {
     (required)
     Birthday: Date
  } */
- app.put('/users/:username', (req, res) => {
-    Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+ app.put('/users/:Username', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username }, 
+    { $set:
         {   
             Username: req.body.Username,
             Password: req.body.Password,
@@ -154,12 +153,12 @@ app.post('/users', (req, res) => {
   });
 
 // Adds movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
-    Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $addToSet: { Favorites: req.params.MovieID }
-    },
-    { new: true }, //This line makes sure that the updated info is returned.
-    (err, updatedUser) => {
+app.post('/users/:Username/Favorites/:MovieID', (req, res) => {
+    Users.findOneAndUpdate(
+        { Username: req.params.Username }, 
+        { $addToSet: { Favorites: req.params.MovieID } },
+        { new: true }, //This line makes sure that the updated info is returned.
+        (err, updatedUser) => {
         if (err) {
             console.error(err);
             res.status(500).send('Error: ' + err);
@@ -170,18 +169,18 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 // Deletes a movie from a user's list of favorites
-app.delete('users/:Username/movies/:MovieID', (req, res) => {
-    Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $delete: { Favorites: req.params.MovieID }
-    },
-    { new: true }, 
-    (err, updatedUser) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        } else {
-            res.json(updatedUser);
-        }
+app.delete('users/:Username/Favorites/:MovieID', (req, res) => {
+    Users.findOneAndUpdate(
+        { Username: req.params.Username }, 
+        { $pull: { Favorites: req.params.MovieID } },
+        { new: true }, 
+        (err, updatedUser) => {
+           if (err) {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+                } else {
+                res.json(updatedUser);
+            }
     });
 });
 
