@@ -7,13 +7,14 @@ URL Endpoints & Request Methods:
 
 /movies  -- GET -- returns a list of all movies to the user
 /movies/:title -- GET -- returns all data about a single movie 
-/movies/:genre -- GET -- returns a list of movies related to a particular genre and information on that genre 
-/movies/:director -- GET -- returns data about a particular director
+/genres/:genre -- GET -- returns a list of movies related to a particular genre and information on that genre 
+/directors/:director -- GET -- returns data about a particular director
 
+/users -- GET -- returns a list of all users
 /users -- POST -- requests a JSON object holding data about the user to add -- responds with the added JSON object holding the new user data and an ID
-/users/:username -- PUT -- updates the user's information (username)
-/users/favorites -- POST -- adds a movie to the user's list of favorites 
-/users/favorites -- DELETE -- removes a movie from the user's list of favroites 
+/users/:Username -- PUT -- updates the user's information (username)
+/users/:Username/Favorites/:MovieID -- POST -- adds a movie to the user's list of favorites 
+/users/:Username/Favorites/:MovieID -- DELETE -- removes a movie from the user's list of favroites 
 /users/:username -- DELETE -- removes a user by allowing them to deregister from the app 
 
 
@@ -26,24 +27,31 @@ no parameters
 no body data expected
 format of response data: JSON
 
-Returns all data on a single movie based on title
-/movies/title
+Returns a JSON list of all users in the app 
+/users
 GET
-URL parameters: title of movie (ex: /movies/Princess%20Diaries)
+no parameters
+no body data expected
+format of response data: JSON
+
+Returns all data on a single movie based on title
+/movies/:title
+GET
+URL parameters: title of movie (ex: /movies/The%20Princess%20Diaries)
 no body data expected
 format of response data: JSON
 
 Returns a list of movies related to a particular genre
-/movies/genre
+/genres/:Genre
 GET
-URL parameters: type of genre (ex: /movies/comedy)
+URL parameters: type of genre (ex: /genres/Comedy)
 no body data expected
 format of response data: JSON
 
 Returns data about a particular director
-/movies/director
+/directors/:Director
 GET
-URL parameters: name of director (ex: /movies/Gary%20Marshall)
+URL parameters: name of director (ex: /directors/Gary%20Marshall)
 no body data expected
 format of response data: JSON
 
@@ -53,31 +61,31 @@ responds with the added JSON object holding the new user data and an ID
 POST
 query parameters: none
 body data expected: JSON object holding the new user data 
-    (example: { name: 'Amy Beck',
-                email address: 'amy@gmail.com', 
-                username: 'amyjenna' })
-format of response data: text confirmation
+    (example: { 'name': 'Amy Beck',
+                'email': 'amy@gmail.com', 
+                'username': 'amyjenna' })
+format of response data: JSON of new user entry
 
 Updates the user's information (username)
 /users/:username
 PUT 
 URL parameters: current username (ex: /users/amyjenna)
-body data expected: new username (ex: {username: amybeck})
-format of response data: text confirmation
+body data expected: JSON object holding new username (ex: {'username': 'amybeck'})
+format of response data: JSON of new user entry
 
 Adds a movie to the user's list of favorites 
-/users/favorites
+/users/:Username/Favorites/:MovieID
 POST
-URL parameters: none
-body data expected: title of favorite movie (ex: 'Princess Diaries')
-format of response data: text confirmation
+URL parameters: username and movieID of movie to add to favorites (ex: /users/amybeck/Favorites/62f538bb3d1609b70ba807de)
+body data expected: none
+format of response data: JSON of updated user document
 
 Removes a movie from the user's list of favroites 
-/users/favorites
+/users/:Username/Favorites/:MovieID
 DELETE
-URL parameters: none
-body data expected: title of movie to be removed from favoirtes (ex: 'Princess Diaries')
-format of response data: text confirmation
+URL parameters: username and movieID of movie to be removed from favorites (ex: /users/amybeck/Favorites/62f538bb3d1609b70ba807de)
+body data expected: none)
+format of response data: JSON of updated user document
 
 Removes a user by allowing them to deregister from the app 
 /users/:username
