@@ -21,12 +21,12 @@ let userSchema = mongoose.Schema({
     Password: {type: String, required: true},
     Email: {type: String, required: true},
     Birthday: Date,
-    Favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
+    Favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movies' }]
 });
 
-let Movie = mongoose.model('Movie', movieSchema);
-let User = mongoose.model('User', userSchema);
+let Movies = mongoose.model('Movies', movieSchema);
+let Users = mongoose.model('Users', userSchema);
 
-module.exports.Movie = Movie;
-module.exports.User = User;
+module.exports.Movies = Movies;
+module.exports.Users = Users;
 
