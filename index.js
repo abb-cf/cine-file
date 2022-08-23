@@ -13,7 +13,7 @@ const Models = require('./models.js');
 const Movies = Models.Movies;
 const Users = Models.Users;
 
-mongoose.connect('mongodb://localhost:27017/cinefiledb', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect( process.env.CONNECT_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
