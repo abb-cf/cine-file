@@ -122,7 +122,7 @@ app.post('/users',
     }
 
     let hashedPassword = Users.hashPassword(req.body.Password);
-    Users.findOne({ Username: req.body.Username})
+    Users.findOne({ Username: req.body.Username })
     .then((user) => {
         if (user) {
             return res.status(400).send(req.body.Username + ' already exists');
@@ -139,7 +139,7 @@ app.post('/users',
                 .catch((error) => {
                     console.error(error);
                     res.status(500).send('Error: ' + error);
-                })
+                });
         }
     })
     .catch((error) => {
