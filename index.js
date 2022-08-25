@@ -13,6 +13,7 @@ const Models = require('./models.js');
 const Movies = Models.Movies;
 const Users = Models.Users;
 
+// mongoose.connect('mongodb://localhost:8080');
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
@@ -81,7 +82,7 @@ app.get('/genres/:Genre', passport.authenticate('jwt', { session: false }), (req
 
 // Gets the data about a single director, by name  
 app.get('/directors/:Director', passport.authenticate('jwt', { session: false }), (req, res) => {
-    Movies.findOne({ 'Director:Name': req.params.Director})
+    Movies.findOne({ 'Director.Name': req.params.Director})
         .then((movie) => {
             res.status(201).json(movie.Director);
         })
