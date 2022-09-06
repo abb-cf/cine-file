@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
   });
 
 //returns a list of all movies to the user
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', (req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
@@ -45,7 +45,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
   });
 
   //returns a list of all users
-  app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+  app.get('/users', (req, res) => {
     Users.find()
         .then((users) => {
             res.status(201).json(users);
