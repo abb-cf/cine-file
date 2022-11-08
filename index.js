@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
   });
 
 //returns a list of all movies to the user
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
@@ -55,6 +55,17 @@ app.get('/movies', (req, res) => {
             res.status(500).send('Error: ' + err);
         });
   })
+
+  app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Users.findOne({ Username: req.params.Username })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error:' + err);
+      });
+  });
 
 // Gets the data about a single movie, by title  
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -254,7 +265,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
   });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 app.listen(port, '0.0.0.0',() => {
     console.log('Listening on Port ' + port);
 });
