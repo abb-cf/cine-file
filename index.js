@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cors = require('cors');
-let allowedOrigins = ['https://cine-file.netlify.app', 'http://localhost:3000/'];
+let allowedOrigins = ['https://cine-file.netlify.app', 'http://localhost:3000/', 'http://localhost:4200/'];
 
 app.use(cors({
     origin: (origin, callback) => {
