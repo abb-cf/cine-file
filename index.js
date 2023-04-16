@@ -13,7 +13,6 @@ const Models = require('./models.js');
 const Movies = Models.Movies;
 const Users = Models.Users;
 
-// mongoose.connect('mongodb://localhost:8080');
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
