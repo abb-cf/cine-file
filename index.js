@@ -19,18 +19,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cors = require('cors');
-let allowedOrigins = ['https://cine-file.netlify.app', 'http://localhost:3000/', 'http://localhost:4200/', 'https://the-cine-file.herokuapp.com/', 'https://the-cine-file.herokuapp.com/users', 'https://the-cine-file.herokuapp.com/movies'];
+app.use(cors());
+// let allowedOrigins = ['https://cine-file.netlify.app', 'http://localhost:3000/', 'http://localhost:4200/', 'https://the-cine-file.herokuapp.com/', 'https://the-cine-file.herokuapp.com/users', 'https://the-cine-file.herokuapp.com/movies'];
 
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            let message = 'The CORS policy for this application doesnt allow access from origin ' + origin;
-            return callback(new Error(message), false);
-        }
-        return callback(null, true);
-    }
-}));
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (!origin) return callback(null, true);
+//         if (allowedOrigins.indexOf(origin) === -1) {
+//             let message = 'The CORS policy for this application doesnt allow access from origin ' + origin;
+//             return callback(new Error(message), false);
+//         }
+//         return callback(null, true);
+//     }
+// }));
 
 let auth = require('./auth.js') (app);
 
