@@ -1,3 +1,4 @@
+// IMPORTS
 const express = require('express'),
     bodyParser = require('body-parser'),
     uuid = require('uuid'),
@@ -13,13 +14,17 @@ const Models = require('./models.js');
 const Movies = Models.Movies;
 const Users = Models.Users;
 
+// DB CONNECTION TO MONGODB USING MONGOOSE
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+// MIDDLEWARE
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// CORS settings
 const cors = require('cors');
 app.use(cors());
+// USE THIS BLOCK if restricting cors access
 // let allowedOrigins = ['https://cine-file.netlify.app', 'http://localhost:3000', 'http://localhost:4200', 'https://the-cine-file.herokuapp.com', 'https://the-cine-file.herokuapp.com/users', 'https://the-cine-file.herokuapp.com/movies'];
 
 // app.use(cors({
@@ -33,14 +38,18 @@ app.use(cors());
 //     }
 // }));
 
+// AUTHENTICATION
 let auth = require('./auth.js') (app);
 
+// PASSPORT
 const passport = require('passport');
 require('./passport.js');
 
-
+// MORGAN - logs a timestamp to 'log.txt'
 app.use(morgan('common'));
 
+
+// ENDPOINTS /////////
 
 /**
  * Landing page, used for testing db connection
